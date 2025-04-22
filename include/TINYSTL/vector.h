@@ -71,9 +71,9 @@ namespace tinystl {
 		void push_back(const T& t);
 		void pop_back();
 
-		void emplace_back();
+		T& emplace_back();
 		template<typename Param>
-		void emplace_back(const Param& param);
+		T& emplace_back(const Param& param);
 
 		void shrink_to_fit();
 
@@ -89,9 +89,9 @@ namespace tinystl {
 		const_iterator begin() const;
 		const_iterator end() const;
 
-		void insert(iterator where);
-		void insert(iterator where, const T& value);
-		void insert(iterator where, const T* first, const T* last);
+		iterator insert(iterator where);
+		iterator insert(iterator where, const T& value);
+		iterator insert(iterator where, const T* first, const T* last);
 
 		template<typename Param>
 		void emplace(iterator where, const Param& param);
@@ -246,14 +246,16 @@ namespace tinystl {
 	}
 
 	template<typename T, typename Alloc>
-	inline void vector<T, Alloc>::emplace_back() {
+	inline T& vector<T, Alloc>::emplace_back() {
 		buffer_append(&m_buffer);
+		return back();
 	}
 
 	template<typename T, typename Alloc>
 	template<typename Param>
-	inline void vector<T, Alloc>::emplace_back(const Param& param) {
+	inline T& vector<T, Alloc>::emplace_back(const Param& param) {
 		buffer_append(&m_buffer, &param);
+		return back();
 	}
 
 	template<typename T, typename Alloc>
@@ -292,18 +294,21 @@ namespace tinystl {
 	}
 
 	template<typename T, typename Alloc>
-	inline void vector<T, Alloc>::insert(typename vector::iterator where) {
+	inline typename vector<T, Alloc>::iterator vector<T, Alloc>::insert(typename vector::iterator where) {
 		buffer_insert(&m_buffer, where, 1);
+		return where;
 	}
 
 	template<typename T, typename Alloc>
-	inline void vector<T, Alloc>::insert(iterator where, const T& value) {
+	inline typename vector<T, Alloc>::iterator vector<T, Alloc>::insert(iterator where, const T& value) {
 		buffer_insert(&m_buffer, where, &value, &value + 1);
+		return where;
 	}
 
 	template<typename T, typename Alloc>
-	inline void vector<T, Alloc>::insert(iterator where, const T* first, const T* last) {
+	inline typename vector<T, Alloc>::iterator vector<T, Alloc>::insert(iterator where, const T* first, const T* last) {
 		buffer_insert(&m_buffer, where, first, last);
+		return where;
 	}
 
 	template<typename T, typename Alloc>
