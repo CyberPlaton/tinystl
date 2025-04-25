@@ -29,6 +29,10 @@
 
 #include <TINYSTL/stddef.h>
 
+#ifndef TINYSTL_HASHER
+#	define TINYSTL_HASHER hash_string
+#endif
+
 namespace tinystl {
 
 	static inline size_t hash_string(const char* str, size_t len) {
@@ -46,7 +50,7 @@ namespace tinystl {
 	template<typename T>
 	inline size_t hash(const T& value) {
 		const size_t asint = (size_t)value;
-		return hash_string((const char*)&asint, sizeof(asint));
+		return TINYSTL_HASHER((const char*)&asint, sizeof(asint));
 	}
 }
 

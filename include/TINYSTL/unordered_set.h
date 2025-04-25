@@ -63,6 +63,8 @@ namespace tinystl {
 
 		void swap(unordered_set& other);
 
+		inline size_t count(const Key& key) const { return (find(key) == end()) ? 0 : 1; }
+
 	private:
 
 		void rehash(size_t nbuckets);
