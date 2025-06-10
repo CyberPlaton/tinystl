@@ -170,6 +170,8 @@ namespace tinystl {
 
 	template<typename Key, typename Value, typename Alloc>
 	inline void unordered_map<Key, Value, Alloc>::clear() {
+		if (empty())
+			return;
 		pointer it = *m_buckets.first;
 		while (it) {
 			const pointer next = it->next;
